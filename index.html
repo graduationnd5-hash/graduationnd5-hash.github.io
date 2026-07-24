@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <title>A Little Plan ♥</title>
+  <style>
+:root {
+  --bg-1: #fff1f6;
+  --bg-2: #f7e7ef;
+  --card: rgba(255,255,255,.82);
+  --text: #6f2743;
+  --muted: #8f6877;
+  --primary: #de4d86;
+  --primary-2: #ef83ac;
+  --border: rgba(111,39,67,.16);
+  --shadow: 0 18px 50px rgba(111,39,67,.12);
+}
+
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, system-ui, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255,255,255,.9), transparent 30%),
+    radial-gradient(circle at 85% 12%, rgba(255,255,255,.8), transparent 28%),
+    linear-gradient(135deg, var(--bg-1), var(--bg-2));
+  overflow-x: hidden;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 34px 18px 70px;
+  position: relative;
+}
+
+.card {
+  width: min(520px, 94vw);
+  min-height: 350px;
+  padding: 40px 34px;
+  border-radius: 24px;
+  background: var(--card);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,.7);
+  box-shadow: var(--shadow);
+  text-align: center;
+  position: relative;
+  animation: enter .4s ease both;
+}
+
+.step { display: none; }
+.step.active { display: block; }
+
+@keyframes enter {
+  from { opacity: 0; transform: translateY(12px) scale(.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+h1 {
+  margin: 12px 0 10px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(27px, 5vw, 39px);
+  line-height: 1.12;
+  letter-spacing: -.02em;
+}
+
+.avatar {
+  width: 82px;
+  height: 82px;
+  margin: 0 auto 14px;
+  display: grid;
+  place-items: center;
+  border-radius: 22px;
+  background: linear-gradient(145deg, #e9e0dd, #c9c0bf);
+  font-size: 48px;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.04);
+}
+
+.big-icon { font-size: 42px; margin-bottom: 6px; }
+.muted { color: var(--muted); }
+.small { margin-top: -2px; font-size: 13px; }
+.tiny { font-size: 11px; margin-bottom: 0; }
+
+.button-zone {
+  position: relative;
+  min-height: 120px;
+  margin-top: 20px;
+}
+
+.btn {
+  border: 0;
+  border-radius: 999px;
+  padding: 13px 22px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .16s ease, box-shadow .16s ease, filter .16s ease;
+  user-select: none;
+}
+
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(0) scale(.98); }
+.btn.primary {
+  color: #fff;
+  background: linear-gradient(90deg, var(--primary), var(--primary-2));
+  box-shadow: 0 10px 24px rgba(222,77,134,.25);
+}
+.btn.secondary {
+  color: #68485a;
+  background: #dca6d9;
+  box-shadow: 0 8px 18px rgba(83,46,89,.13);
+}
+.btn.wide { width: 100%; margin-top: 18px; }
+
+#yes-btn { position: absolute; left: 30%; top: 12px; transform: translateX(-50%); }
+#yes-btn:hover { transform: translateX(-50%) translateY(-2px); }
+.runaway { position: absolute; left: 62%; top: 12px; transition: left .18s ease, top .18s ease, transform .15s ease; }
+
+form { text-align: left; margin-top: 26px; }
+label { display: block; font-size: 13px; font-weight: 700; margin: 16px 0; }
+input, select {
+  width: 100%;
+  margin-top: 8px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.78);
+  color: #5c4050;
+  border-radius: 10px;
+  padding: 12px 13px;
+  font: inherit;
+  outline: none;
+}
+input:focus, select:focus { border-color: rgba(222,77,134,.55); box-shadow: 0 0 0 3px rgba(222,77,134,.08); }
+
+.choice-grid {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+}
+.choice-grid.two { grid-template-columns: repeat(2, 1fr); }
+.choice-card {
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.58);
+  color: var(--text);
+  border-radius: 16px;
+  padding: 18px 12px;
+  cursor: pointer;
+  font: inherit;
+  transition: .18s ease;
+}
+.choice-card:hover { transform: translateY(-2px); background: rgba(255,255,255,.9); }
+.choice-card.selected { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(222,77,134,.10); background: #fff; }
+.choice-emoji { display: block; font-size: 30px; margin-bottom: 8px; }
+.choice-card strong { display: block; font-size: 13px; }
+.choice-note { display: block; color: var(--muted); font-size: 11px; margin-top: 6px; line-height: 1.35; }
+.btn:disabled { opacity: .45; cursor: not-allowed; transform: none; box-shadow: none; }
+
+.vibe-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 24px;
+}
+.vibe {
+  border: 1px solid transparent;
+  background: rgba(255,255,255,.55);
+  border-radius: 16px;
+  padding: 18px 8px 14px;
+  cursor: pointer;
+  transition: .18s ease;
+}
+.vibe:hover { transform: translateY(-2px); background: rgba(255,255,255,.85); }
+.vibe.selected { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(222,77,134,.10); background: #fff; }
+.vibe .emoji { font-size: 29px; display: block; margin-bottom: 8px; }
+.vibe strong { font-size: 13px; }
+
+.heart-line { letter-spacing: 6px; margin: 20px 0 4px; color: var(--primary); }
+.price-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  text-align: left;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  margin-top: 24px;
+  background: rgba(255,255,255,.42);
+}
+.price-box strong { display: block; font-family: Georgia, "Times New Roman", serif; }
+.price-box span { display: block; font-size: 10px; color: var(--muted); margin-top: 4px; }
+.price { font-family: Georgia, "Times New Roman", serif; font-weight: 700; font-size: 25px; white-space: nowrap; }
+
+.link-btn {
+  border: 0;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 12px 6px 2px;
+  font: inherit;
+  font-size: 12px;
+}
+.hidden { display: none; }
+footer { position: fixed; bottom: 14px; font-size: 11px; color: #9c7b89; }
+
+.floating-heart {
+  position: fixed;
+  z-index: -1;
+  opacity: .18;
+  animation: float 5s ease-in-out infinite;
+  color: #d95a8b;
+}
+.h1 { left: 11%; top: 18%; font-size: 18px; }
+.h2 { right: 14%; top: 30%; font-size: 12px; animation-delay: -1.7s; }
+.h3 { left: 25%; bottom: 16%; font-size: 10px; animation-delay: -3.2s; }
+@keyframes float { 50% { transform: translateY(-14px) rotate(8deg); } }
+
+#confetti-layer { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
+.confetti {
+  position: absolute;
+  width: 9px;
+  height: 13px;
+  border-radius: 3px;
+  animation: fall 1.5s ease-out forwards;
+}
+@keyframes fall {
+  from { transform: translateY(-40px) rotate(0deg); opacity: 1; }
+  to { transform: translateY(110vh) rotate(660deg); opacity: 0; }
+}
+
+@media (max-width: 520px) {
+  .card { padding: 34px 20px; min-height: 340px; }
+  .vibe-grid { gap: 8px; }
+  .choice-grid.two { grid-template-columns: 1fr; }
+  .vibe { padding: 15px 5px 12px; }
+  #yes-btn { left: 28%; }
+  .runaway { left: 60%; }
+}
+
+  </style>
+</head>
+<body>
+  <main class="app-shell">
+    <div class="floating-heart h1">♥</div>
+    <div class="floating-heart h2">♥</div>
+    <div class="floating-heart h3">♥</div>
+
+    <section class="card step active" id="step-ask">
+      <div class="avatar" aria-label="cute dog avatar">🐶</div>
+      <h1>Will you go out with me? ♥</h1>
+      <p class="muted small">(birthday gift 🎁)</p>
+      <p class="muted">I promise it’ll be fun.</p>
+      <div class="button-zone" id="button-zone">
+        <button class="btn primary" id="yes-btn">YES ♥</button>
+        <button class="btn secondary runaway" id="no-btn">NO 🙄</button>
+      </div>
+    </section>
+
+    <section class="card step" id="step-surprise">
+      <div class="big-icon">💌</div>
+      <h1>WAIT YOU ACTUALLY<br>SAID YES?? 🥹</h1>
+      <p class="muted">I was so ready for you to say no 😭</p>
+      <button class="btn primary wide" data-next="step-date">okay, what’s the plan?</button>
+    </section>
+
+    <section class="card step" id="step-date">
+      <div class="big-icon">📅</div>
+      <h1>Which day works for you?</h1>
+      <p class="muted small">These are the only two available 😌</p>
+      <form id="date-form">
+        <label>Pick a Day 💌</label>
+        <div class="choice-grid two" id="day-grid">
+          <button type="button" class="choice-card day-choice" data-date="2026-07-31">
+            <span class="choice-emoji">📅</span>
+            <strong>Friday, July 31</strong>
+          </button>
+          <button type="button" class="choice-card day-choice" data-date="2026-08-01">
+            <span class="choice-emoji">📅</span>
+            <strong>Saturday, August 1</strong>
+          </button>
+        </div>
+        <label>
+          What Time? ⏰
+          <select id="time-input" required>
+            <option value="">Select a time...</option>
+          </select>
+        </label>
+        <button type="submit" class="btn primary wide" id="date-next" disabled>lock it in ♥</button>
+      </form>
+    </section>
+
+    <section class="card step" id="step-vibe">
+      <div class="big-icon">🍽️</div>
+      <h1>What are we feeling? 🍴✨</h1>
+      <p class="muted small">pick your vibe</p>
+      <div class="vibe-grid" id="vibe-grid"></div>
+      <button class="btn primary wide hidden" id="vibe-next">that one 😌</button>
+    </section>
+
+    <section class="card step" id="step-activity">
+      <div class="big-icon">🎬</div>
+      <h1>One more choice...</h1>
+      <p class="muted small">What do you feel like doing?</p>
+      <div class="choice-grid two" id="activity-grid">
+        <button type="button" class="choice-card activity-choice" data-activity="Cinema — The Odyssey">
+          <span class="choice-emoji">🎥</span>
+          <strong>Cinema</strong>
+          <span class="choice-note">Watch The Odyssey</span>
+        </button>
+        <button type="button" class="choice-card activity-choice" data-activity="Just go out">
+          <span class="choice-emoji">✨</span>
+          <strong>Just Go Out</strong>
+          <span class="choice-note">No movie, just the outing</span>
+        </button>
+      </div>
+      <button class="btn primary wide hidden" id="activity-next">perfect, continue 😌</button>
+    </section>
+
+    <section class="card step" id="step-confirm">
+      <h1>glad you didn’t say no.<br>be ready by <span id="chosen-time">6</span> 🚗</h1>
+      <p class="muted" id="chosen-summary"></p>
+      <div class="heart-line">♥ ♥ ♥ ♥ ♥</div>
+      <button class="btn primary wide" data-next="step-fee">okay, deal 😎</button>
+    </section>
+
+    <section class="card step" id="step-fee">
+      <div class="big-icon">💳</div>
+      <h1>one small deposit</h1>
+      <p class="muted">to officially confirm the plan, there’s just one tiny deposit. totally normal. definitely not suspicious.</p>
+      <div class="price-box">
+        <div>
+          <strong>Outing Agreement™</strong>
+          <span>one-time deposit • non-refundable • absolutely worth it</span>
+        </div>
+        <div class="price">EGP 499</div>
+      </div>
+      <button class="btn primary wide" id="fake-pay">pay EGP 499 & confirm 🤝</button>
+      <p class="tiny muted hidden" id="send-status"></p>
+      <button class="link-btn" id="go-back">go back</button>
+      <p class="tiny muted">No real payment is collected. Obviously 😭</p>
+    </section>
+
+    <section class="card step" id="step-done">
+      <div class="big-icon">😂</div>
+      <h1>relax, I'm kidding.</h1>
+      <p class="muted" id="final-summary"></p>
+      <div class="heart-line">♥ ♥ ♥ ♥ ♥</div>
+      <button class="btn primary wide" id="restart">start over</button>
+    </section>
+
+    <footer>built with unnecessary levels of planning ♥</footer>
+  </main>
+
+  <div id="confetti-layer" aria-hidden="true"></div>
+  <script>
+// ===============================
+// EASY SETTINGS — EDIT THESE FIRST
+// ===============================
+const CONFIG = {
+  defaultPickupTime: "6:00 PM",
+  fee: "EGP 499",
+  vibes: [
+    { name: "Burger", emoji: "🍔" },
+    { name: "Pizza", emoji: "🍕" },
+    { name: "Fried Chicken", emoji: "🍗" },
+    { name: "Shawarma", emoji: "🌯" },
+    { name: "Crepe", emoji: "🥞" },
+    { name: "Feteer", emoji: "🫓" }
+  ]
+};
+
+const state = { date: "", time: "", vibe: "", activity: "" };
+
+const steps = [...document.querySelectorAll(".step")];
+const showStep = (id) => {
+  steps.forEach(s => s.classList.toggle("active", s.id === id));
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
+
+document.querySelectorAll("[data-next]").forEach(btn => {
+  btn.addEventListener("click", () => showStep(btn.dataset.next));
+});
+
+// NO button escapes the cursor/touch.
+const noBtn = document.getElementById("no-btn");
+const zone = document.getElementById("button-zone");
+let escapeCount = 0;
+
+function moveNoButton() {
+  const zoneRect = zone.getBoundingClientRect();
+  const btnRect = noBtn.getBoundingClientRect();
+  const maxX = Math.max(5, zoneRect.width - btnRect.width - 5);
+  const maxY = Math.max(5, zoneRect.height - btnRect.height - 5);
+  noBtn.style.left = `${Math.random() * maxX}px`;
+  noBtn.style.top = `${Math.random() * maxY}px`;
+  noBtn.style.transform = `rotate(${(Math.random() - .5) * 12}deg)`;
+  escapeCount += 1;
+  if (escapeCount === 4) noBtn.textContent = "nice try 😭";
+  if (escapeCount === 8) noBtn.textContent = "still no 😌";
+}
+
+noBtn.addEventListener("mouseenter", moveNoButton);
+noBtn.addEventListener("pointerdown", (e) => { e.preventDefault(); moveNoButton(); });
+noBtn.addEventListener("click", (e) => { e.preventDefault(); moveNoButton(); });
+
+// YES button + confetti
+const yesBtn = document.getElementById("yes-btn");
+yesBtn.addEventListener("click", () => {
+  launchConfetti();
+  setTimeout(() => showStep("step-surprise"), 260);
+});
+
+function launchConfetti() {
+  const layer = document.getElementById("confetti-layer");
+  const colors = ["#de4d86", "#f5a3c1", "#b08ad6", "#ffd166", "#8bd3c7"];
+  for (let i = 0; i < 46; i++) {
+    const piece = document.createElement("span");
+    piece.className = "confetti";
+    piece.style.left = `${Math.random() * 100}%`;
+    piece.style.top = `${-10 - Math.random() * 30}px`;
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animationDelay = `${Math.random() * .28}s`;
+    piece.style.animationDuration = `${1.2 + Math.random() * .8}s`;
+    layer.appendChild(piece);
+    setTimeout(() => piece.remove(), 2300);
+  }
+}
+
+// Build half-hour time slots
+const timeSelect = document.getElementById("time-input");
+for (let hour = 12; hour <= 21; hour++) {
+  for (const minute of [0, 30]) {
+    if (hour === 21 && minute === 30) continue;
+    const h12 = hour > 12 ? hour - 12 : hour;
+    const label = `${h12}:${minute === 0 ? "00" : "30"} ${hour >= 12 ? "PM" : "AM"}`;
+    const opt = document.createElement("option");
+    opt.value = label;
+    opt.textContent = label;
+    timeSelect.appendChild(opt);
+  }
+}
+
+// Only July 31 and August 1 are available.
+const dateNext = document.getElementById("date-next");
+document.querySelectorAll(".day-choice").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".day-choice").forEach(b => b.classList.remove("selected"));
+    btn.classList.add("selected");
+    state.date = btn.dataset.date;
+    dateNext.disabled = false;
+  });
+});
+
+document.getElementById("date-form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  if (!state.date || !timeSelect.value) return;
+  state.time = timeSelect.value;
+  showStep("step-vibe");
+});
+
+// Vibes
+const vibeGrid = document.getElementById("vibe-grid");
+const vibeNext = document.getElementById("vibe-next");
+CONFIG.vibes.forEach(item => {
+  const card = document.createElement("button");
+  card.type = "button";
+  card.className = "vibe";
+  card.innerHTML = `<span class="emoji">${item.emoji}</span><strong>${item.name}</strong>`;
+  card.addEventListener("click", () => {
+    document.querySelectorAll(".vibe").forEach(v => v.classList.remove("selected"));
+    card.classList.add("selected");
+    state.vibe = item.name;
+    vibeNext.classList.remove("hidden");
+  });
+  vibeGrid.appendChild(card);
+});
+
+vibeNext.addEventListener("click", () => {
+  showStep("step-activity");
+});
+
+// Activity choice: cinema for The Odyssey, or just go out.
+const activityNext = document.getElementById("activity-next");
+document.querySelectorAll(".activity-choice").forEach(card => {
+  card.addEventListener("click", () => {
+    document.querySelectorAll(".activity-choice").forEach(c => c.classList.remove("selected"));
+    card.classList.add("selected");
+    state.activity = card.dataset.activity;
+    activityNext.classList.remove("hidden");
+  });
+});
+
+activityNext.addEventListener("click", () => {
+  const formattedDate = new Date(`${state.date}T12:00:00`).toLocaleDateString("en-US", {
+    weekday: "long", month: "long", day: "numeric"
+  });
+  document.getElementById("chosen-time").textContent = state.time || CONFIG.defaultPickupTime;
+  document.getElementById("chosen-summary").textContent = `${formattedDate} • ${state.time} • ${state.vibe} • ${state.activity}`;
+  showStep("step-confirm");
+});
+
+// Deposit is intentionally fake. The response is emailed through FormSubmit.
+async function sendResponse() {
+  const formattedDate = state.date
+    ? new Date(`${state.date}T12:00:00`).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })
+    : "Not selected";
+
+  const payload = {
+    _subject: "New outing response ♥",
+    _template: "table",
+    Answer: "YES",
+    Date: formattedDate,
+    Time: state.time || "Not selected",
+    Food: state.vibe || "Not selected",
+    Activity: state.activity || "Not selected",
+    Submitted_At: new Date().toLocaleString("en-US", { timeZone: "Africa/Cairo" })
+  };
+
+  const res = await fetch("https://formsubmit.co/ajax/aliabdelrahman750@gmail.com", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    },
+    body: JSON.stringify(payload)
+  });
+
+  if (!res.ok) throw new Error("Submission failed");
+  return res.json();
+}
+
+document.getElementById("fake-pay").addEventListener("click", async () => {
+  const btn = document.getElementById("fake-pay");
+  const status = document.getElementById("send-status");
+  btn.disabled = true;
+  btn.textContent = "confirming...";
+  status.classList.remove("hidden");
+  status.textContent = "Saving your choices...";
+
+  let sent = false;
+  try {
+    await sendResponse();
+    sent = true;
+  } catch (err) {
+    console.error(err);
+  }
+
+  const formattedDate = state.date
+    ? new Date(`${state.date}T12:00:00`).toLocaleDateString("en-US", { month: "long", day: "numeric" })
+    : "our day";
+  document.getElementById("final-summary").textContent = `No EGP 499 deposit 😭. The plan is ${formattedDate} at ${state.time}, ${state.vibe}, and ${state.activity}.`;
+  launchConfetti();
+  showStep("step-done");
+
+  if (!sent) {
+    // The plan still works visually even if the email service is temporarily unavailable.
+    console.warn("The response could not be emailed this time.");
+  }
+
+  btn.disabled = false;
+  btn.textContent = "pay EGP 499 & confirm 🤝";
+});
+
+document.getElementById("go-back").addEventListener("click", () => showStep("step-confirm"));
+document.getElementById("restart").addEventListener("click", () => window.location.reload());
+
+  </script>
+</body>
+</html>
